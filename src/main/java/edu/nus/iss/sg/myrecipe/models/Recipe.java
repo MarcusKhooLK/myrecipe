@@ -71,14 +71,21 @@ public class Recipe {
     public void setMeasurements(List<String> measurements) {
         this.measurements = measurements;
     }
-    public static Recipe convert(JsonObject jsonObject) {
+
+    public static Recipe convert(JsonObject jsonObject, Boolean convertAll) {
         Recipe recipe = new Recipe();
         recipe.setRecipeId(jsonObject.getString("idMeal", ""));
         recipe.setName(jsonObject.getString("strMeal", ""));
+        recipe.setThumbnail(jsonObject.getString("strMealThumb", ""));
+        
+        // early exit if don't need to convert all
+        if(!convertAll) {
+            return recipe;
+        }
+
         recipe.setCategory(jsonObject.getString("strCategory", ""));
         recipe.setCountry(jsonObject.getString("strArea", ""));
         recipe.setInstructions(jsonObject.getString("strInstructions", ""));
-        recipe.setThumbnail(jsonObject.getString("strMealThumb", ""));
         String youtubeLink = jsonObject.getString("strYoutube", "");
         youtubeLink = youtubeLink.replace("/watch?v=", "/embed/");
         recipe.setYoutubeLink(youtubeLink);

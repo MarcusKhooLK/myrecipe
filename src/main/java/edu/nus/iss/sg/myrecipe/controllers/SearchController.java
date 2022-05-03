@@ -26,7 +26,7 @@ public class SearchController {
     @GetMapping(path = "")
     public ModelAndView postSearch(@RequestParam String s) {
         final ModelAndView mav = new ModelAndView();
-        List<Recipe> recipes = searchSvc.searchRecipes(s.trim().toLowerCase());
+        List<Recipe> recipes = searchSvc.searchRecipes(s.trim().toLowerCase(), false);
 
         mav.setStatus(HttpStatus.OK);
         mav.setViewName("search");

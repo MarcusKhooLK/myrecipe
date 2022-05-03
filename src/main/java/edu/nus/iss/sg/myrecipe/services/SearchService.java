@@ -23,7 +23,7 @@ public class SearchService {
     private static final String URL_SEARCH_NAME = "https://www.themealdb.com/api/json/v1/1/search.php";
     private static final String URL_SEARCH_ID = "https://www.themealdb.com/api/json/v1/1/lookup.php";
 
-    public List<Recipe> searchRecipes(String searchString) {
+    public List<Recipe> searchRecipes(String searchString, Boolean convertAll) {
         final String searchUrl = UriComponentsBuilder.fromUriString(URL_SEARCH_NAME)
                 .queryParam("s", searchString)
                 .toUriString();
@@ -48,7 +48,7 @@ public class SearchService {
             return recipes;
 
         for (int i = 0; i < jRecipes.size(); i++) {
-            Recipe r = Recipe.convert(jRecipes.getJsonObject(i));
+            Recipe r = Recipe.convert(jRecipes.getJsonObject(i), convertAll);
             recipes.add(r);
         }
 
@@ -73,7 +73,7 @@ public class SearchService {
         if (jRecipes == null)
             return Optional.empty();
 
-        Recipe recipe = Recipe.convert(jRecipes.getJsonObject(0));
+        Recipe recipe = Recipe.convert(jRecipes.getJsonObject(0), true);
 
         return Optional.of(recipe);
     }
