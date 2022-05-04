@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search - My Recipe</title>
+    <title>Create Recipe - My Recipe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -46,7 +46,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Create Recipe</a></li>
+                            <li><a class="dropdown-item" href="/createRecipe">Create Recipe</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -57,58 +57,9 @@
         </div>
     </nav>
     <div class="container">
-        <div class="row mt-5">
+        <div class="row">
             <div class="col">
-                <form method="GET" action="/search">
-                    <div class="input-group">
-                        <input type="search" name="s" id="s" class="form-control" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit"><i
-                                    class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </div>
-                </form>
-                <div class="container" data-th-if="${recipe == null}">
-                    <div class="row mt-5">
-                        <p>Search results for <span data-th-text="${searchString}"></span></p>
-                        <div class="col-md-auto" data-th-each="r: ${recipes}">
-                            <a data-th-href="|/search/${r.recipeId}|">
-                                <img data-th-src="${r.thumbnail}" width="200" height="auto">
-                                <br>
-                                <span data-th-text="${r.name}" style="
-                                display:inline-block;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                text-overflow: ellipsis;
-                                max-width: 20ch;"></span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="row justify-content-md-center" data-th-if="${recipes!=null and recipes.empty}">
-                        <div class="col-md-auto">
-                            <p>Your search <em><span data-th-text="${searchString}"></span></em> did not match any
-                                listings. Try another search.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row mt-5" data-th-if="${recipe != null}">
-            <div class="col">
-                <p><img data-th-src="${recipe.thumbnail}"></p>
-                <p data-th-text="${recipe.name}"></p>
-                <p data-th-text="${recipe.category}"></p>
-                <p data-th-text="${recipe.country}"></p>
-                <p data-th-text="${recipe.instructions}"></p>
-                <p>Ingredients:</p>
-                <ul>
-                    <li data-th-each="ingredient: ${recipe.ingredients}"
-                        data-th-text="|${ingredient} ${recipe.measurements[ingredientStat.index]}|"></li>
-                </ul>
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe width="1024" height="576" data-th-src="${recipe.youtubeLink}"></iframe>
-                </div>
+                <h1>Create Recipe</h1>
             </div>
         </div>
     </div>
