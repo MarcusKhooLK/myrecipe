@@ -11,8 +11,8 @@ public class LogInService {
     @Autowired
     private UserRepository userRepo;
 
-    public Boolean createAccount(final String username, final String email, final String password) {
-        return userRepo.createAccount(username, email, password);
+    public Boolean createAccount(final String username, final String password) {
+        return userRepo.createAccount(username, password);
     }
 
     public Boolean authAccount(final String username, final String password) {

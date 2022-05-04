@@ -19,17 +19,4 @@ public class MainController {
         mav.addObject("userLoggedIn", username);
         return mav;
     }
-    
-    @GetMapping(path="/login")
-    public ModelAndView showLoginView() {
-        ModelAndView mav = new ModelAndView();
-        mav.setStatus(HttpStatus.OK);
-        mav.setViewName("login");
-        return mav;
-    }
-
-    @GetMapping(path="/createRecipe")
-    public ModelAndView showCreateRecipe(HttpSession session) {
-        return new ModelAndView("redirect:/protected/createRecipe");
-    }
 }

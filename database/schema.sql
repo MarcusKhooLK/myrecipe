@@ -11,8 +11,8 @@ create table test(
 );
 
 create table user(
-    email varchar(64) not null,
-    username char(20) not null,
+    user_id int not null auto_increment,
+    username varchar(20) not null,
     password varchar(286) not null,
-    primary key(email)
+    primary key(user_id)
 );

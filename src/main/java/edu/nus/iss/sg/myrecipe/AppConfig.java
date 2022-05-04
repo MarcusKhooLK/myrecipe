@@ -13,7 +13,7 @@ public class AppConfig {
     public FilterRegistrationBean<AuthenticationFilter> registerFilters() {
         FilterRegistrationBean<AuthenticationFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new AuthenticationFilter());
-        registrationBean.addUrlPatterns("/protected/*");
+        registrationBean.addUrlPatterns("/recipe/create");
         return registrationBean;
     }
 }

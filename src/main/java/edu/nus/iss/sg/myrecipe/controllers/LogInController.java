@@ -21,6 +21,16 @@ public class LogInController {
     @Autowired
     private LogInService logInSvc;
 
+    @GetMapping(path="")
+    public ModelAndView showLoginView(HttpSession session) {
+        String username = (String)session.getAttribute("name");
+        ModelAndView mav = new ModelAndView();
+        mav.setStatus(HttpStatus.OK);
+        mav.setViewName("login");
+        mav.addObject("userLoggedIn", username);
+        return mav;
+    }
+
     @GetMapping(path="/logout")
     public ModelAndView getLogOut(HttpSession session) {
         session.invalidate();
@@ -34,9 +44,8 @@ public class LogInController {
     public ModelAndView createAcc(@RequestBody MultiValueMap<String, String> form) {
         String username = form.getFirst("usernameNew");
         String password = form.getFirst("passwordNew");
-        String email = form.getFirst("emailNew");
 
-        Boolean result = logInSvc.createAccount(username, email, password);
+        Boolean result = logInSvc.createAccount(username, password);
 
         ModelAndView mav = new ModelAndView();
         mav.setViewName("login");
@@ -45,7 +54,7 @@ public class LogInController {
             mav.addObject("statusMessage", "Thank you! Please log in.");
         }
         else{
-            mav.addObject("statusMessage", "Email is taken! Please use another email");
+            mav.addObject("statusMessage", "Username is taken! Please use another username");
         }
 
         return mav;

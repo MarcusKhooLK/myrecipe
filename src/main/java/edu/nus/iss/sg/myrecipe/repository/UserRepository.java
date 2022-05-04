@@ -11,16 +11,16 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate template;
 
-    public Boolean createAccount(final String username, final String email, final String password) {
+    public Boolean createAccount(final String username, final String password) {
 
-        final SqlRowSet rowSet = template.queryForRowSet(SQL.FIND_USER_BY_EMAIL, email);
+        final SqlRowSet rowSet = template.queryForRowSet(SQL.SELECT_USER_ID_BY_USERNAME, username);
 
-        // email exists
+        // user exists
         if(rowSet.next()) {
             return false;
         }
 
-        int result = template.update(SQL.CREATE_USER, email, username, password);
+        int result = template.update(SQL.CREATE_USER, username, password);
         return result > 0;
     }
 
