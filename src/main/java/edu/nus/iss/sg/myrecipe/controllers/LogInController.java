@@ -73,6 +73,7 @@ public class LogInController {
             mav.addObject("statusMessage", "Welcome %s!".formatted(username));
             mav.setViewName("index");
         } else {
+            mav.addObject("userLoggedIn", null);
             mav.addObject("statusMessage", "Log in failed!");
             mav.setViewName("login");
         }

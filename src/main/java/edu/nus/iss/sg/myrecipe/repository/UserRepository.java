@@ -29,4 +29,8 @@ public class UserRepository {
 
         return result.next();
     }
+
+    public Integer findUserIdByUsername(final String username) {
+        return -1;
+    }
 }
