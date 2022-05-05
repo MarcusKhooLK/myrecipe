@@ -46,7 +46,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/recipe/create">Create Recipe</a></li>
+                            <li><a class="dropdown-item" href="/account/recipe/create">Create Recipe</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -72,7 +72,17 @@
                     <div class="row mt-5">
                         <p>Search results for <span data-th-text="${searchString}"></span></p>
                         <div class="col-md-auto" data-th-each="r: ${recipes}">
-                            <a data-th-href="|/search/${r.recipeId}|">
+                            <a data-th-if="${r.createdBy == null}" data-th-href="|/search/${r.recipeId}|">
+                                <img data-th-src="${r.thumbnail}" width="200" height="auto">
+                                <br>
+                                <span data-th-text="${r.name}" style="
+                                display:inline-block;
+                                white-space: nowrap;
+                                overflow: hidden;
+                                text-overflow: ellipsis;
+                                max-width: 20ch;"></span>
+                            </a>
+                            <a data-th-unless="${r.createdBy == null}" data-th-href="|/search/u/${r.recipeId}|">
                                 <img data-th-src="${r.thumbnail}" width="200" height="auto">
                                 <br>
                                 <span data-th-text="${r.name}" style="
@@ -97,10 +107,11 @@
         <div class="row mt-5" data-th-if="${recipe != null}">
             <div class="col">
                 <p><img data-th-src="${recipe.thumbnail}"></p>
-                <p data-th-text="${recipe.name}"></p>
-                <p data-th-text="${recipe.category}"></p>
-                <p data-th-text="${recipe.country}"></p>
-                <p data-th-text="${recipe.instructions}"></p>
+                <p data-th-text="|Name: ${recipe.name}|"></p>
+                <p data-th-if="${recipe.createdBy != null}" data-th-text="|Created by: ${recipe.createdBy}|"></p>
+                <p data-th-text="|Category: ${recipe.category}|"></p>
+                <p data-th-text="|Country: ${recipe.country}|"></p>
+                <p data-th-text="|Instructions: ${recipe.instructions}|"></p>
                 <p>Ingredients:</p>
                 <ul>
                     <li data-th-each="ingredient: ${recipe.ingredients}"

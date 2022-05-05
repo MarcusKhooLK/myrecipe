@@ -26,7 +26,9 @@ public class SearchController {
     @GetMapping(path = "")
     public ModelAndView postSearch(@RequestParam String s) {
         final ModelAndView mav = new ModelAndView();
-        List<Recipe> recipes = searchSvc.searchRecipes(s.trim().toLowerCase(), false);
+        final String searchString = s.trim().toLowerCase();
+        List<Recipe> recipes = searchSvc.searchRecipesFromMealDb(searchString);
+        recipes.addAll(searchSvc.searchRecipesFromMyRecipeDb(searchString));
 
         mav.setStatus(HttpStatus.OK);
         mav.setViewName("search");
@@ -36,21 +38,28 @@ public class SearchController {
         return mav;
     }
 
-    @GetMapping(path = "/{recipeId}")
-    public ModelAndView postSearchByRecipeId(@PathVariable String recipeId) {
+    @GetMapping(path = {"/{recipeId}", "/{pathId}/{recipeId}"})
+    public ModelAndView postSearchByRecipeId(@PathVariable(name="recipeId") String recipeId, @PathVariable(name="pathId", required = false) String pathId) {
         final ModelAndView mav = new ModelAndView();
-        Optional<Recipe> recipe = searchSvc.searchRecipeById(recipeId.trim());
+        Optional<Recipe> recipe = Optional.empty();
+
+        if(pathId == null || pathId.trim().isBlank()) {
+            recipe = searchSvc.searchRecipeFromMealDbById(recipeId.trim());
+        } else {
+            recipe = searchSvc.searchRecipeFromMyRecipeDbById(recipeId.trim());
+        }
 
         if (recipe.isEmpty()) {
             mav.setStatus(HttpStatus.NOT_FOUND);
+            mav.addObject("errorMsg", "Not found!");
+            mav.setViewName("error");
         } else {
             mav.setStatus(HttpStatus.OK);
+            mav.addObject("recipe", recipe.get());
+            mav.setViewName("search");
+            mav.addObject("recipes", new ArrayList<Recipe>());
+            mav.addObject("searchString", "");
         }
-
-        mav.setViewName("search");
-        mav.addObject("recipes", new ArrayList<Recipe>());
-        mav.addObject("recipe", recipe.get());
-        mav.addObject("searchString", "");
         return mav;
     }
 }

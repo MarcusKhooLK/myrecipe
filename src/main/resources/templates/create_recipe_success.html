@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Recipe</title>
+    <title>Create Recipe - My Recipe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -46,7 +46,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/account/recipe/create">Create Recipe</a></li>
+                            <li><a class="dropdown-item" href="/recipe/create">Create Recipe</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -59,19 +59,9 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>My Recipe</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <form method="GET" action="/search">
-                    <div class="input-group">
-                        <input type="search" name="s" id="s" class="form-control" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit"><i
-                                    class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </div>
+                <h1>Recipe create successfully!</h1>
+                <form action="/account/recipe/view">
+                    <button type="submit">View recipes</button>
                 </form>
             </div>
         </div>

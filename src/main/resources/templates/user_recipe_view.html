@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Recipe</title>
+    <title>View Recipe - My Recipe</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
         integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -15,7 +14,6 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
 </head>
-
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -59,23 +57,23 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>My Recipe</h1>
+                <h1>Your recipes</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <form method="GET" action="/search">
-                    <div class="input-group">
-                        <input type="search" name="s" id="s" class="form-control" required>
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="submit"><i
-                                    class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </div>
-                </form>
+            <div class="col-md-auto" data-th-each="r: ${recipes}">
+                <a data-th-href="|/search/u/${r.recipeId}|">
+                    <img data-th-if="${r.thumbnail != null}" data-th-src="${r.thumbnail}" width="200" height="auto">
+                    <br>
+                    <span data-th-text="${r.name}" style="
+                    display:inline-block;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    max-width: 20ch;"></span>
+                </a>
             </div>
         </div>
     </div>
 </body>
-
 </html>

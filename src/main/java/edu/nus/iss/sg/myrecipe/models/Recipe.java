@@ -3,8 +3,6 @@ package edu.nus.iss.sg.myrecipe.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.json.JsonObject;
-
 public class Recipe {
 
     private String recipeId;
@@ -14,6 +12,7 @@ public class Recipe {
     private String instructions;
     private String thumbnail;
     private String youtubeLink;
+    private String createdBy;
     private List<String> ingredients = new ArrayList<String>();
     private List<String> measurements = new ArrayList<String>();
 
@@ -71,38 +70,11 @@ public class Recipe {
     public void setMeasurements(List<String> measurements) {
         this.measurements = measurements;
     }
-
-    public static Recipe convert(JsonObject jsonObject, Boolean convertAll) {
-        Recipe recipe = new Recipe();
-        recipe.setRecipeId(jsonObject.getString("idMeal", ""));
-        recipe.setName(jsonObject.getString("strMeal", ""));
-        recipe.setThumbnail(jsonObject.getString("strMealThumb", ""));
-        
-        // early exit if don't need to convert all
-        if(!convertAll) {
-            return recipe;
-        }
-
-        recipe.setCategory(jsonObject.getString("strCategory", ""));
-        recipe.setCountry(jsonObject.getString("strArea", ""));
-        recipe.setInstructions(jsonObject.getString("strInstructions", ""));
-        String youtubeLink = jsonObject.getString("strYoutube", "");
-        youtubeLink = youtubeLink.replace("/watch?v=", "/embed/");
-        recipe.setYoutubeLink(youtubeLink);
-        List<String> ingredients = new ArrayList<String>();
-        List<String> measurements = new ArrayList<String>();
-        for(int i = 1; i <= 20; i++) {
-            String temp = jsonObject.getString("strIngredient%d".formatted(i), "");
-            if(!temp.isEmpty())
-                ingredients.add(temp);
-            
-            temp = jsonObject.getString("strMeasure%d".formatted(i), "");
-            if(!temp.isEmpty())
-                measurements.add(temp);
-        }
-        recipe.setIngredients(ingredients);
-        recipe.setMeasurements(measurements);
-        return recipe;
+    public String getCreatedBy() {
+        return createdBy;
+    }
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

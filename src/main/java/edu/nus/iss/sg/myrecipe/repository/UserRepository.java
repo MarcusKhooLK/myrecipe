@@ -13,14 +13,14 @@ public class UserRepository {
 
     public Boolean createAccount(final String username, final String password) {
 
-        final SqlRowSet rowSet = template.queryForRowSet(SQL.SELECT_USER_ID_BY_USERNAME, username);
+        Integer result = findUserIdByUsername(username);
 
         // user exists
-        if(rowSet.next()) {
+        if(result > 0) {
             return false;
         }
 
-        int result = template.update(SQL.CREATE_USER, username, password);
+        result = template.update(SQL.CREATE_USER, username, password);
         return result > 0;
     }
 
@@ -31,6 +31,12 @@ public class UserRepository {
     }
 
     public Integer findUserIdByUsername(final String username) {
+        final SqlRowSet result = template.queryForRowSet(SQL.SELECT_USER_ID_BY_USERNAME, username);
+
+        if(result.next()) {
+            return result.getInt("user_id");
+        }
+
         return -1;
     }
 }

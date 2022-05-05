@@ -46,7 +46,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/recipe/create">Create Recipe</a></li>
+                            <li><a class="dropdown-item" href="/account/recipe/create">Create Recipe</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -62,7 +62,7 @@
                 <h1>Create Recipe</h1>
             </div>
         </div>
-        <form action="/recipe/create" method="POST">
+        <form action="/account/recipe/create" method="POST">
             <div class="row">
                 <div class="col">
                     <table class="table" >
@@ -85,24 +85,24 @@
                             </tr>
                             <tr>
                                 <td>Youtube Link:</td>
-                                <td><input type="text" name="recipeYoutubeLink"></td>
+                                <td><input type="url" name="recipeYoutubeLink"></td>
                             </tr>
                             <tr>
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>Measurements</th>
-                                            <th>Ingredients</th>
+                                            <th>Measurement</th>
+                                            <th>Ingredient</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><input type="text" data-th-name="|recipeIngredient${i}|" maxlength="32" required></td>
-                                            <td><input type="text" data-th-name="|recipeMeasurement${i}|" maxlength="16" required></td>
+                                            <td><input type="text" data-th-name="|recipeMeasurement0|" maxlength="32" required></td>
+                                            <td><input type="text" data-th-name="|recipeIngredient0|" maxlength="16" required></td>
                                         </tr>
                                         <tr data-th-each="i: ${#numbers.sequence(1,9)}">
-                                            <td><input type="text" data-th-name="|recipeIngredient${i}|" maxlength="32"></td>
-                                            <td><input type="text" data-th-name="|recipeMeasurement${i}|" maxlength="16"></td>
+                                            <td><input type="text" data-th-name="|recipeMeasurement${i}|" maxlength="32"></td>
+                                            <td><input type="text" data-th-name="|recipeIngredient${i}|" maxlength="16"></td>
                                         </tr>
                                     </tbody>
                                 </table>
