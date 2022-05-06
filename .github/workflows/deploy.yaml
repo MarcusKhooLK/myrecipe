@@ -1,4 +1,4 @@
-name: Deploy to Heroku
+name: Publish release and deploy
 on: 
   push:
     tags:
