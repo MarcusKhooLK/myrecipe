@@ -46,6 +46,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/account/recipe/view">View recipes</a></li>
                             <li><a class="dropdown-item" href="/account/recipe/create">Create Recipe</a></li>
                         </ul>
                     </li>
@@ -62,29 +63,33 @@
                 <h1>Create Recipe</h1>
             </div>
         </div>
-        <form action="/account/recipe/create" method="POST">
+        <form action="/account/recipe/create" method="POST" enctype="multipart/form-data">
             <div class="row">
                 <div class="col">
                     <table class="table" >
                         <tbody>
                             <tr>
-                                <td>Name:</td>
+                                <td>Name</td>
                                 <td><input type="text" name="recipeName" required></td>
                             </tr>
                             <tr>
-                                <td>Category:</td>
+                                <td>Thumbnail</td>
+                                <td><input type="file" name="recipeThumbnail" accept="image/*" required></td>
+                            </tr>
+                            <tr>
+                                <td>Category (Optional)</td>
                                 <td><input type="text" name="recipeCategory"></td>
                             </tr>
                             <tr>
-                                <td>Country:</td>
+                                <td>Country (Optional)</td>
                                 <td><input type="text" name="recipeCountry"></td>
                             </tr>
                             <tr>
-                                <td>Instructions:</td>
+                                <td>Instructions</td>
                                 <td><textarea name="recipeInstructions" cols="40" rows="5" required></textarea></td>
                             </tr>
                             <tr>
-                                <td>Youtube Link:</td>
+                                <td>Youtube Link (Optional)</td>
                                 <td><input type="url" name="recipeYoutubeLink"></td>
                             </tr>
                             <tr>

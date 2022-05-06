@@ -46,6 +46,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/account/recipe/view">View recipes</a></li>
                             <li><a class="dropdown-item" href="/account/recipe/create">Create Recipe</a></li>
                         </ul>
                     </li>
@@ -106,12 +107,13 @@
 
         <div class="row mt-5" data-th-if="${recipe != null}">
             <div class="col">
-                <p><img data-th-src="${recipe.thumbnail}"></p>
+                <p><img data-th-src="${recipe.thumbnail}" width="600" height="auto"></p>
                 <p data-th-text="|Name: ${recipe.name}|"></p>
                 <p data-th-if="${recipe.createdBy != null}" data-th-text="|Created by: ${recipe.createdBy}|"></p>
                 <p data-th-text="|Category: ${recipe.category}|"></p>
                 <p data-th-text="|Country: ${recipe.country}|"></p>
-                <p data-th-text="|Instructions: ${recipe.instructions}|"></p>
+                <p style="width: 1000px;
+                    word-wrap: break-word;" data-th-text="|Instructions: ${recipe.instructions}|"></p>
                 <p>Ingredients:</p>
                 <ul>
                     <li data-th-each="ingredient: ${recipe.ingredients}"

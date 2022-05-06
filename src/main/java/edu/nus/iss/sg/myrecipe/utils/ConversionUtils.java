@@ -18,7 +18,6 @@ public class ConversionUtils {
         String recipeCategory = form.getFirst("recipeCategory").trim();
         String recipeCountry = form.getFirst("recipeCountry").trim();
         String recipeInstructions = form.getFirst("recipeInstructions").trim();
-        //String recipeThumbnail = form.getFirst("recipeThumbnail").trim();
         String recipeYoutubeLink = form.getFirst("recipeYoutubeLink").trim();
 
         List<String> recipeIngredients = new ArrayList<String>();
@@ -37,7 +36,6 @@ public class ConversionUtils {
         recipe.setName(recipeName);
         recipe.setCategory(recipeCategory.isBlank() ? null : recipeCategory);
         recipe.setCountry(recipeCountry.isBlank() ? null : recipeCountry);
-        //recipe.setThumbnail(recipeThumbnail.isBlank() ? null : recipeThumbnail);
         recipe.setYoutubeLink(recipeYoutubeLink.isBlank() ? null : recipeYoutubeLink);
         recipe.setInstructions(recipeInstructions);
         recipe.setIngredients(recipeIngredients);
@@ -53,8 +51,12 @@ public class ConversionUtils {
         r.setCategory(result.getString("category"));
         r.setCountry(result.getString("country"));
         r.setThumbnail(result.getString("thumbnail"));
-        r.setYoutubeLink(result.getString("youtubeLink"));
-        r.setInstructions(result.getString("instructions"));
+        String youtubeLink = result.getString("youtubeLink");
+        if(youtubeLink != null) {
+            youtubeLink = youtubeLink.replace("/watch?v=", "/embed/");
+        }
+        r.setYoutubeLink(youtubeLink);
+        r.setInstructions(result.getString("instructions") +" 1023801820318298031892038102803801283010283");
         return r;
     }
 

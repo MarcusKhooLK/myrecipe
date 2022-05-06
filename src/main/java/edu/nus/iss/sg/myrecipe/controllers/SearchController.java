@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,8 @@ public class SearchController {
     private SearchService searchSvc;
 
     @GetMapping(path = "")
-    public ModelAndView postSearch(@RequestParam String s) {
+    public ModelAndView postSearch(@RequestParam String s, HttpSession session) {
+        String username = (String)session.getAttribute("name");
         final ModelAndView mav = new ModelAndView();
         final String searchString = s.trim().toLowerCase();
         List<Recipe> recipes = searchSvc.searchRecipesFromMealDb(searchString);
@@ -35,12 +38,16 @@ public class SearchController {
         mav.addObject("recipes", recipes);
         mav.addObject("recipe", null);
         mav.addObject("searchString", s);
+        mav.addObject("userLoggedIn", username);
         return mav;
     }
 
     @GetMapping(path = {"/{recipeId}", "/{pathId}/{recipeId}"})
-    public ModelAndView postSearchByRecipeId(@PathVariable(name="recipeId") String recipeId, @PathVariable(name="pathId", required = false) String pathId) {
+    public ModelAndView postSearchByRecipeId(@PathVariable(name="recipeId") String recipeId, 
+                                            @PathVariable(name="pathId", required = false) String pathId,
+                                            HttpSession session) {
         final ModelAndView mav = new ModelAndView();
+        String username = (String)session.getAttribute("name");
         Optional<Recipe> recipe = Optional.empty();
 
         if(pathId == null || pathId.trim().isBlank()) {
@@ -60,6 +67,7 @@ public class SearchController {
             mav.addObject("recipes", new ArrayList<Recipe>());
             mav.addObject("searchString", "");
         }
+        mav.addObject("userLoggedIn", username);
         return mav;
     }
 }

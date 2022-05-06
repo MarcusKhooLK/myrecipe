@@ -44,6 +44,7 @@
                             <span data-th-text="${userLoggedIn}">
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="/account/recipe/view">View recipes</a></li>
                             <li><a class="dropdown-item" href="/account/recipe/create">Create Recipe</a></li>
                         </ul>
                     </li>
@@ -72,6 +73,11 @@
                     text-overflow: ellipsis;
                     max-width: 20ch;"></span>
                 </a>
+            </div>
+            <div class="row justify-content-md-center" data-th-if="${recipes!=null and recipes.empty}">
+                <div class="col-md-auto">
+                    <p>You do not have any recipes. <a href="/account/recipe/create">Create</a> one now!</p>
+                </div>
             </div>
         </div>
     </div>
