@@ -4,6 +4,10 @@ env:
   SPRING_DATASOURCE_URL: ${{ secrets.spring_datasource_url }}
   SPRING_DATASOURCE_USERNAME: ${{ secrets.spring_datasource_username }}
   SPRING_DATASOURCE_PASSWORD: ${{ secrets.spring_datasource_password }}
+  SPACES_ENDPOINT: ${{ secrets.spaces_endpoint }}
+  SPACES_REGION: ${{ secrets.spaces_region }}
+  SPACES_ACCESS_KEY: ${{ secrets.spaces_access_key }}
+  SPACES_SECRET_KEY: ${{ secrets.spaces_secret_key }}
 jobs:
   step1:
     runs-on: ubuntu-latest
