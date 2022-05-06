@@ -32,8 +32,8 @@ jobs:
     - name: Upload coverage badge to DigitalOcean spaces
       uses: BetaHuhn/do-spaces-action@v2
       with:
-        access_key: ${{ secrets.access_key }}
-        secret_key: ${{ secrets.secret_key }}
+        access_key: ${{ secrets.spaces_access_key }}
+        secret_key: ${{ secrets.spaces_secret_key }}
         space_name: dumpbucket
         space_region: sgp1
         source: .github/badges/jacoco.svg
@@ -42,8 +42,8 @@ jobs:
     - name: Upload coverage report
       uses: BetaHuhn/do-spaces-action@v2
       with:
-        access_key: ${{ secrets.access_key }}
-        secret_key: ${{ secrets.secret_key }}
+        access_key: ${{ secrets.spaces_access_key }}
+        secret_key: ${{ secrets.spaces_secret_key }}
         space_name: dumpbucket
         space_region: sgp1
         source: target/site/jacoco
