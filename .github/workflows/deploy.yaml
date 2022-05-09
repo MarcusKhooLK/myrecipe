@@ -1,4 +1,4 @@
-name: Publish release and deploy
+name: Release and deploy
 on: 
   push:
     tags:
