@@ -43,29 +43,48 @@ public class SearchController {
     }
 
     @GetMapping(path = {"/{recipeId}", "/{pathId}/{recipeId}"})
-    public ModelAndView postSearchByRecipeId(@PathVariable(name="recipeId") String recipeId, 
+    public ModelAndView postSearchByRecipeId(@PathVariable(name="recipeId") String recipeIdStr, 
                                             @PathVariable(name="pathId", required = false) String pathId,
                                             HttpSession session) {
         final ModelAndView mav = new ModelAndView();
         String username = (String)session.getAttribute("name");
-        Optional<Recipe> recipe = Optional.empty();
-
-        if(pathId == null || pathId.trim().isBlank()) {
-            recipe = searchSvc.searchRecipeFromMealDbById(recipeId.trim());
-        } else {
-            recipe = searchSvc.searchRecipeFromMyRecipeDbById(recipeId.trim());
+        Optional<Recipe> recipeOpt = Optional.empty();
+        Integer recipeId = null;
+        
+        try {
+            recipeId = Integer.parseInt(recipeIdStr.trim());
+        } catch(NumberFormatException ex) {
+            mav.setStatus(HttpStatus.NOT_FOUND);
+            mav.addObject("errorMsg", "Page not found!");
+            mav.setViewName("error");
+            mav.addObject("isCreatedByOwnUser", false);
+            return mav;
         }
 
-        if (recipe.isEmpty()) {
-            mav.setStatus(HttpStatus.NOT_FOUND);
-            mav.addObject("errorMsg", "Not found!");
-            mav.setViewName("error");
+        if(pathId == null || pathId.trim().isBlank()) {
+            recipeOpt = searchSvc.searchRecipeFromMealDbById(recipeId);
         } else {
+            recipeOpt = searchSvc.searchRecipeFromMyRecipeDbById(recipeId);
+        }
+
+        if (recipeOpt.isEmpty()) {
+            mav.setStatus(HttpStatus.NOT_FOUND);
+            mav.addObject("errorMsg", "Page not found!");
+            mav.setViewName("error");
+            mav.addObject("isCreatedByOwnUser", false);
+        } else {
+            Recipe r = recipeOpt.get();
+            Boolean isCreatedByOwnUser = false;
+            if(r.getCreatedBy() != null) {
+                isCreatedByOwnUser = r.getCreatedBy().contentEquals(username);
+            }
+
             mav.setStatus(HttpStatus.OK);
-            mav.addObject("recipe", recipe.get());
+            mav.addObject("recipe", r);
             mav.setViewName("search");
             mav.addObject("recipes", new ArrayList<Recipe>());
             mav.addObject("searchString", "");
+            mav.addObject("isCreatedByOwnUser", isCreatedByOwnUser);
         }
         mav.addObject("userLoggedIn", username);
         return mav;

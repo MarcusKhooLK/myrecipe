@@ -71,7 +71,7 @@ public class SearchService {
         return recipes;
     }
 
-    public Optional<Recipe> searchRecipeFromMealDbById(String recipedId) {
+    public Optional<Recipe> searchRecipeFromMealDbById(Integer recipedId) {
 
         final String searchUrl = UriComponentsBuilder.fromUriString(URL_SEARCH_ID)
                 .queryParam("i", recipedId)
@@ -99,8 +99,8 @@ public class SearchService {
         return Optional.of(recipe);
     }
 
-    public Optional<Recipe> searchRecipeFromMyRecipeDbById(String recipeId) {
-        Optional<Recipe> recipe = recipeSvc.getRecipeByRecipeId(Integer.parseInt(recipeId));
+    public Optional<Recipe> searchRecipeFromMyRecipeDbById(Integer recipeId) {
+        Optional<Recipe> recipe = recipeSvc.getRecipeByRecipeId(recipeId);
         return recipe;
     }
 }

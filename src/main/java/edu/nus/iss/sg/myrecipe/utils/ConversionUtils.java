@@ -56,7 +56,7 @@ public class ConversionUtils {
             youtubeLink = youtubeLink.replace("/watch?v=", "/embed/");
         }
         r.setYoutubeLink(youtubeLink);
-        r.setInstructions(result.getString("instructions") +" 1023801820318298031892038102803801283010283");
+        r.setInstructions(result.getString("instructions"));
         return r;
     }
 

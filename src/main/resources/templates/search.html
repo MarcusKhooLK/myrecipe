@@ -104,23 +104,32 @@
                 </div>
             </div>
         </div>
-
-        <div class="row mt-5" data-th-if="${recipe != null}">
-            <div class="col">
-                <p><img data-th-src="${recipe.thumbnail}" width="600" height="auto"></p>
-                <p data-th-text="|Name: ${recipe.name}|"></p>
-                <p data-th-if="${recipe.createdBy != null}" data-th-text="|Created by: ${recipe.createdBy}|"></p>
-                <p data-th-text="|Category: ${recipe.category}|"></p>
-                <p data-th-text="|Country: ${recipe.country}|"></p>
-                <p style="width: 1000px;
-                    word-wrap: break-word;" data-th-text="|Instructions: ${recipe.instructions}|"></p>
-                <p>Ingredients:</p>
-                <ul>
-                    <li data-th-each="ingredient: ${recipe.ingredients}"
-                        data-th-text="|${ingredient} ${recipe.measurements[ingredientStat.index]}|"></li>
-                </ul>
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe width="1024" height="576" data-th-src="${recipe.youtubeLink}"></iframe>
+        <div class="container" data-th-if="${recipe != null}">
+            <div class="row mt-5">
+                <div class="col">
+                    <p><img data-th-src="${recipe.thumbnail}" width="600" height="auto"></p>
+                    <p data-th-text="|Name: ${recipe.name}|"></p>
+                    <p data-th-if="${recipe.createdBy != null}" data-th-text="|Created by: ${recipe.createdBy}|"></p>
+                    <p data-th-text="|Category: ${recipe.category}|"></p>
+                    <p data-th-text="|Country: ${recipe.country}|"></p>
+                    <p style="width: 1000px;
+                        word-wrap: break-word;" data-th-text="|Instructions: ${recipe.instructions}|"></p>
+                    <p>Ingredients:</p>
+                    <ul>
+                        <li data-th-each="ingredient: ${recipe.ingredients}"
+                            data-th-text="|${ingredient} ${recipe.measurements[ingredientStat.index]}|"></li>
+                    </ul>
+                    <div class="embed-responsive embed-responsive-16by9" data-th-if="${recipe.youtubeLink != null}">
+                        <iframe width="1024" height="576" data-th-src="${recipe.youtubeLink}"></iframe>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5" data-th-if="${isCreatedByOwnUser}">
+                <div class="col">
+                    <form action="/account/recipe/delete" method="POST">
+                        <input type="hidden" name="recipeIdToDelete" data-th-value="${recipe.recipeId}">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
                 </div>
             </div>
         </div>

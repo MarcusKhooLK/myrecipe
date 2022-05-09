@@ -7,14 +7,20 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.FlashMapManager;
 import org.springframework.web.servlet.ModelAndView;
 
+import edu.nus.iss.sg.myrecipe.exceptions.DeleteRecipeException;
 import edu.nus.iss.sg.myrecipe.models.Recipe;
 import edu.nus.iss.sg.myrecipe.services.AmazonS3Service;
 import edu.nus.iss.sg.myrecipe.services.RecipeService;
@@ -85,5 +91,39 @@ public class RecipeController {
         mav.addObject("recipes", recipes);
         return mav;
     }
-    
+
+    @PostMapping(path="/delete")
+    public ModelAndView showDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
+        String username = (String)session.getAttribute("name");
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("delete_recipe_confirmation");
+        mav.setStatus(HttpStatus.OK);
+        mav.addObject("recipeIdToDelete", form.getFirst("recipeIdToDelete"));
+        mav.addObject("userLoggedIn", username);
+        return mav;
+    }
+
+    @PostMapping(path="/delete", params="yes")
+    public ModelAndView yesDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
+        String username = (String)session.getAttribute("name");
+        ModelAndView mav = new ModelAndView();
+        String recipeId = form.getFirst("recipeIdToDelete");
+        try {
+            recipeSvc.deleteRecipeByRecipeId(Integer.parseInt(recipeId));
+            mav.addObject("statusMessage", "Successfully deleted!");
+        } catch(DeleteRecipeException ex) {
+            mav.addObject("statusMessage", "Something went wrong! Please try again later!");
+        }
+        mav.setViewName("delete_recipe_status");
+        mav.setStatus(HttpStatus.OK);
+        mav.addObject("userLoggedIn", username);
+        return mav;
+    }
+
+    @PostMapping(path="/delete", params="no")
+    public ModelAndView noDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
+        String recipeId = form.getFirst("recipeIdToDelete");
+        return new ModelAndView("redirect:/search/u/%s".formatted(recipeId));
+    }
+
 }

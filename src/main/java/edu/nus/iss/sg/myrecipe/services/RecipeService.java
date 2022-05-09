@@ -61,4 +61,8 @@ public class RecipeService {
     public Optional<Recipe> getRecipeByRecipeId(Integer recipeId) {
         return recipeRepo.getRecipeByRecipeId(recipeId);
     }
+
+    public void deleteRecipeByRecipeId(Integer recipeId) {
+        recipeRepo.deleteRecipeByRecipeId(recipeId);
+    }
 }
