@@ -2,15 +2,7 @@ package edu.nus.iss.sg.myrecipe;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.io.UnsupportedEncodingException;
-import java.net.PasswordAuthentication;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-
-import com.amazonaws.Request;
-
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +33,8 @@ public class TestLogInController {
     @Autowired
     private UserRepository userRepo;
 
-    String username = "dummy";
-    String password = "dummy";
+    private final String username = "dummy";
+    private final String password = "dummy";
 
     @Test
     public void test1_shouldGetLogIn() {

@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.plaf.metal.MetalBorders.PaletteBorder;
-
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
