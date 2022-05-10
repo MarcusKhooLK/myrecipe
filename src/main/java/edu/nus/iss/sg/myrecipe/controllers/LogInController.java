@@ -4,6 +4,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nus.iss.sg.myrecipe.services.LogInService;
 
 @Controller
-@RequestMapping(path="/login")
+@RequestMapping(path="/login", produces=MediaType.TEXT_HTML_VALUE)
 public class LogInController {
 
     @Autowired
@@ -31,7 +32,7 @@ public class LogInController {
         return mav;
     }
 
-    @GetMapping(path="/logout")
+    @PostMapping(path="/logout")
     public ModelAndView getLogOut(HttpSession session) {
         session.invalidate();
         ModelAndView mav = new ModelAndView();
@@ -40,7 +41,7 @@ public class LogInController {
         return mav;
     }
     
-    @PostMapping(path="/create")
+    @PostMapping(path="/create", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public ModelAndView createAcc(@RequestBody MultiValueMap<String, String> form) {
         String username = form.getFirst("usernameNew");
         String password = form.getFirst("passwordNew");

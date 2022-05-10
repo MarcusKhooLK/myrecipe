@@ -49,7 +49,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>

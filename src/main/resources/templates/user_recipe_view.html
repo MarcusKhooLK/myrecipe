@@ -49,7 +49,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>
@@ -57,14 +57,14 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h1>Your recipes</h1>
+            <div class="col mt-5">
+                <h1 class="display-5">Your recipes</h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-md-auto" data-th-each="r: ${recipes}">
+            <div class="col-md-auto mt-3" data-th-each="r: ${recipes}">
                 <a data-th-href="|/search/u/${r.recipeId}|">
-                    <img data-th-if="${r.thumbnail != null}" data-th-src="${r.thumbnail}" width="200" height="auto">
+                    <img data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${r.thumbnail}|" width="200" height="auto">
                     <br>
                     <span data-th-text="${r.name}" style="
                     display:inline-block;
@@ -75,7 +75,7 @@
                 </a>
             </div>
             <div class="row justify-content-md-center" data-th-if="${recipes!=null and recipes.empty}">
-                <div class="col-md-auto">
+                <div class="col-md-auto mt-5">
                     <p>You do not have any recipes. <a href="/account/recipe/create">Create</a> one now!</p>
                 </div>
             </div>

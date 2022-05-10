@@ -21,7 +21,6 @@ public class AmazonS3Service {
     
     public String upload(final MultipartFile file, String uploaderName) {
         String objId = UUID.randomUUID().toString().substring(0, 8);
-
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
@@ -39,7 +38,7 @@ public class AmazonS3Service {
     }
 
     public void delete(final String key) {
-        DeleteObjectRequest deleteReq = new DeleteObjectRequest("dumpBucket", "myrecipe/images/%s".formatted(key));
+        DeleteObjectRequest deleteReq = new DeleteObjectRequest("dumpbucket", "myrecipe/images/%s".formatted(key));
         s3.deleteObject(deleteReq);
     }
 }

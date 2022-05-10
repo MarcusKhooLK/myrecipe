@@ -52,7 +52,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>
@@ -60,64 +60,52 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h1>Create Recipe</h1>
+            <div class="col mt-5">
+                <h1 class="display-5">Create Recipe</h1>
             </div>
         </div>
-        
+
         <form action="/account/recipe/create" method="POST" enctype="multipart/form-data" id="recipe_form">
             <div class="row">
-                <div class="col">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <td>Name</td>
-                                <td><input type="text" name="recipeName" required></td>
-                            </tr>
-                            <tr>
-                                <td>Thumbnail</td>
-                                <td><input type="file" name="recipeThumbnail" accept="image/*" required></td>
-                            </tr>
-                            <tr>
-                                <td>Category (Optional)</td>
-                                <td><input type="text" name="recipeCategory"></td>
-                            </tr>
-                            <tr>
-                                <td>Country (Optional)</td>
-                                <td><input type="text" name="recipeCountry"></td>
-                            </tr>
-                            <tr>
-                                <td>Instructions</td>
-                                <td><textarea name="recipeInstructions" cols="80" rows="5" required></textarea></td>
-                            </tr>
-                            <tr>
-                                <td>Youtube Link (Optional)</td>
-                                <td><input type="url" name="recipeYoutubeLink"></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <div class="col mt-5">
+                    <label for="id_name">Name</label>
+                    <input type="text" class="form-control mb-3" name="recipeName" id="id_name" required></td>
+                    <label for="id_thumbnail">Thumbnail</label>
+                    <input type="file" class="form-control mb-3" name="recipeThumbnail" accept="image/*"
+                        id="id_thumbnail" required>
+                    <label for="id_category">Category</label>
+                    <input type="text" class="form-control mb-3" name="recipeCategory" id="id_category" required>
+                    <label for="id_country">Country</label>
+                    <input type="text" class="form-control mb-3" name="recipeCountry" id="id_country" required>
+                    <label for="id_instructions">Instructions</label>
+                    <textarea class="form-control mb-3" name="recipeInstructions" cols="80" rows="5"
+                        id="id_instructions" required></textarea>
+                    <label for="id_youtubelink">Youtube Link</label>
+                    <input class="form-control mb-3" type="url" name="recipeYoutubeLink" id="id_youtubelink">
                 </div>
             </div>
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <div class="col align-self-start">Ingredients:</div>
-                    <div class="col align-self-end d-grid gap-2 d-md-flex justify-content-md-end">
-                        <button class="btn btn-primary btn-lg" type="button" onclick="add_more_field()">+</button>
-                        <button class="btn btn-primary btn-lg" type="button" onclick="remove_field()">-</button>
-                    </div>
+            <div class="row">
+                <div class="col">Ingredients</div>
+                <div class="col gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-primary" type="button" onclick="add_more_field()">+</button>
+                    <button class="btn btn-primary" type="button" onclick="remove_field()">-</button>
                 </div>
             </div>
-            <div class="container mt-3" id="ingredient_wrapper">
+            <div class="container mt-3 mb-3 p-0" id="ingredient_wrapper">
                 <div class="row" id="row0">
                     <div class="col">
-                        <input class="form-control mb-3" type="text" name="recipeMeasurement0" maxlength="32" placeholder="Measurement" required>
+                        <input class="form-control mb-3" type="text" name="recipeMeasurement0" maxlength="32"
+                            placeholder="Measurement" required>
                     </div>
                     <div class="col">
-                        <input class="form-control mb-3" type="text" name="recipeIngredient0" maxlength="16" placeholder="Ingredient" required>
+                        <input class="form-control mb-3" type="text" name="recipeIngredient0" maxlength="16"
+                            placeholder="Ingredient" required>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+            <div class="d-grid gap-2">
+                <button type="submit" class="btn btn-primary btn-lg col-6 mx-auto">Create</button>
+            </div>
         </form>
 
     </div>

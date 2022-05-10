@@ -49,7 +49,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>
@@ -59,9 +59,6 @@
         <div class="row justify-content-md-center">
             <div class="col mt-5" data-th-if="${errorMsg != null}">
                 <h1 class="text-center" data-th-text="${errorMsg}"></h1>
-            </div>
-            <div class="col mt-5" data-th-unless="${errorMsg != null}">
-                <h1 class="text-center">Page not found</h1>
             </div>
         </div>
     </div>

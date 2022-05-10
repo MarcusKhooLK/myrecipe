@@ -62,7 +62,13 @@ public class RecipeService {
         return recipeRepo.getRecipeByRecipeId(recipeId);
     }
 
-    public void deleteRecipeByRecipeId(Integer recipeId) {
-        recipeRepo.deleteRecipeByRecipeId(recipeId);
+    @Transactional
+    public Boolean deleteRecipeByRecipeId(Integer recipeId) {
+
+        if(recipeRepo.deleteIngredientsByRecipeId(recipeId)) {
+            return recipeRepo.deleteRecipeByRecipeId(recipeId);
+        }
+
+        return false;
     }
 }

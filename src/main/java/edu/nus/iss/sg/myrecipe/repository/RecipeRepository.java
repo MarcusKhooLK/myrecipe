@@ -13,9 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import edu.nus.iss.sg.myrecipe.exceptions.DeleteRecipeException;
 import edu.nus.iss.sg.myrecipe.models.Recipe;
 import edu.nus.iss.sg.myrecipe.utils.ConversionUtils;
 
@@ -119,18 +117,13 @@ public class RecipeRepository {
         }
     }
 
-    @Transactional
-    public void deleteRecipeByRecipeId(Integer recipeId) {
+    public Boolean deleteRecipeByRecipeId(Integer recipeId) {
+        int result = template.update(SQL.DELETE_RECIPE_BY_ID, recipeId);
+        return result > 0;
+    }
+
+    public Boolean deleteIngredientsByRecipeId(Integer recipeId) {
         int result = template.update(SQL.DELETE_INGREDIENTS_BY_RECIPEID, recipeId);
-
-        if(result <= 0) {
-            throw new DeleteRecipeException("Something went wrong when deleting ingredients");
-        }
-
-        result = template.update(SQL.DELETE_RECIPE_BY_ID, recipeId);
-
-        if(result <= 0) {
-            throw new DeleteRecipeException("Something went wrong when deleting recipe");
-        }
+        return result > 0;
     }
 }

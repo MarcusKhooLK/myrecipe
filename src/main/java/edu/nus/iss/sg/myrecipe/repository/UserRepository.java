@@ -39,4 +39,15 @@ public class UserRepository {
 
         return -1;
     }
+
+    public Boolean deleteAccount(final String username) {
+        Integer userId = findUserIdByUsername(username);
+
+        if(userId > 0) {
+            int result = template.update(SQL.DELETE_USER, userId);
+            return result > 0;
+        }
+
+        return false;
+    }
 }

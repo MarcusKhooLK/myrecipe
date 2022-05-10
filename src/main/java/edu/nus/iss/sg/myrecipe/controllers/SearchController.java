@@ -26,7 +26,7 @@ public class SearchController {
     private SearchService searchSvc;
 
     @GetMapping(path = "")
-    public ModelAndView postSearch(@RequestParam String s, HttpSession session) {
+    public ModelAndView getSearch(@RequestParam String s, HttpSession session) {
         String username = (String)session.getAttribute("name");
         final ModelAndView mav = new ModelAndView();
         final String searchString = s.trim().toLowerCase();
@@ -43,11 +43,12 @@ public class SearchController {
     }
 
     @GetMapping(path = {"/{recipeId}", "/{pathId}/{recipeId}"})
-    public ModelAndView postSearchByRecipeId(@PathVariable(name="recipeId") String recipeIdStr, 
+    public ModelAndView getSearchByRecipeId(@PathVariable(name="recipeId") String recipeIdStr, 
                                             @PathVariable(name="pathId", required = false) String pathId,
                                             HttpSession session) {
         final ModelAndView mav = new ModelAndView();
         String username = (String)session.getAttribute("name");
+        mav.addObject("userLoggedIn", username);
         Optional<Recipe> recipeOpt = Optional.empty();
         Integer recipeId = null;
         
@@ -86,7 +87,7 @@ public class SearchController {
             mav.addObject("searchString", "");
             mav.addObject("isCreatedByOwnUser", isCreatedByOwnUser);
         }
-        mav.addObject("userLoggedIn", username);
+        
         return mav;
     }
 }

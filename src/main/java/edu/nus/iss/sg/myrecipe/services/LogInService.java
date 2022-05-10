@@ -18,4 +18,8 @@ public class LogInService {
     public Boolean authAccount(final String username, final String password) {
         return userRepo.authAccount(username, password);
     }
+
+    public Boolean deleteAccount(final String username) {
+        return userRepo.deleteAccount(username);
+    }
 }

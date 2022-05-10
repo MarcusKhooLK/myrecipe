@@ -51,7 +51,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>
@@ -59,10 +59,12 @@
     </nav>
     <div class="container">
         <div class="row">
-            <div class="col">
-                <h1>Recipe create successfully!</h1>
+            <div class="col mt-5">
+                <h1 class="display-5">Recipe create successfully!</h1>
                 <form action="/account/recipe/view">
-                    <button type="submit">View recipes</button>
+                    <div class="d-grid gap-2 col-6 mx-auto mt-5">
+                        <button type="submit" class="btn btn-primary">View recipes</button>
+                    </div>
                 </form>
             </div>
         </div>

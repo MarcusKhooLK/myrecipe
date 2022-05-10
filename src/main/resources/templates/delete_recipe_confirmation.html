@@ -49,20 +49,22 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>
         </div>
     </nav>
     <div class="container">
-        <div class="row justify-content-md-center">
+        <div class="row">
             <div class="col mt-5">
                 <form action="/account/recipe/delete" method="POST">
-                    <h1>Are you sure?</h1>
-                    <input type="hidden" name="recipeIdToDelete" data-th-value="${recipeIdToDelete}" />
-                    <input type="submit" name="yes" value="Yes" />
-                    <input type="submit" name="no" value="No" />
+                    <h1 class="display-5 text-center mb-3">Are you sure?</h1>
+                    <input class="" type="hidden" name="recipeIdToDelete" data-th-value="${recipeIdToDelete}" />
+                    <div class="d-grid gap-2 col-4 mx-auto">
+                        <button class="btn btn-danger" type="submit" name="yes">Yes</button>
+                        <button class="btn btn-primary" type="submit" name="no">No</button>
+                    </div>
                 </form>
             </div>
         </div>
