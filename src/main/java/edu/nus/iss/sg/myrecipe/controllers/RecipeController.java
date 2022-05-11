@@ -48,9 +48,8 @@ public class RecipeController {
     @PostMapping(path="/create")
     public ModelAndView postCreateRecipe(@RequestParam MultiValueMap<String, String> form,
                                             @RequestParam MultipartFile recipeThumbnail,
-                                            @RequestParam(required = false) String usernameTest,
                                             HttpSession session) {
-        String username = (usernameTest != null) ? usernameTest : (String)session.getAttribute("name");
+        String username = (String)session.getAttribute("name");
         ModelAndView mav = new ModelAndView();
     
         String thumbnailId = s3Svc.upload(recipeThumbnail, username);
@@ -59,17 +58,16 @@ public class RecipeController {
         r.setCreatedBy(username);
         r.setThumbnail(thumbnailId);
 
-        System.out.println(r);
-        System.out.println(form);
-
-        if(recipeSvc.createRecipe(r, username)) {
+        try {
+            recipeSvc.createRecipe(r, username);
             mav.setViewName("create_recipe_success");
             mav.setStatus(HttpStatus.OK);
-        } else {
+        } catch(Exception ex) {
             s3Svc.delete(thumbnailId);
             mav.setViewName("error");
             mav.addObject("errorMsg", "Something went wrong when creating recipe");
             mav.setStatus(HttpStatus.BAD_REQUEST);
+            return mav;
         }
         mav.addObject("userLoggedIn", username);
 
@@ -77,11 +75,11 @@ public class RecipeController {
     }
     
     @GetMapping(path="/view")
-    public ModelAndView showUserRecipes(HttpSession session, @RequestParam(required = false) String usernameTest) {
+    public ModelAndView showUserRecipes(HttpSession session) {
 
         String username = (String)session.getAttribute("name");
 
-        List<Recipe> recipes = recipeSvc.getAllUserRecipesByUserId((usernameTest != null) ? usernameTest : username);
+        List<Recipe> recipes = recipeSvc.getAllUserRecipesByUserId(username);
 
         ModelAndView mav = new ModelAndView();
 
@@ -111,7 +109,6 @@ public class RecipeController {
         mav.setViewName("delete_recipe_status");
 
         String recipeIdStr = form.getFirst("recipeIdToDelete");
-        System.out.println("Deleting recipe " + recipeIdStr);
         Integer recipeId = null;
         try {
             recipeId = Integer.parseInt(recipeIdStr);
@@ -139,7 +136,6 @@ public class RecipeController {
     @PostMapping(path="/delete", params="no")
     public ModelAndView noDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
         String recipeId = form.getFirst("recipeIdToDelete");
-        System.out.println("Not Deleting recipe " + recipeId);
         return new ModelAndView("redirect:/search/u/%s".formatted(recipeId));
     }
 

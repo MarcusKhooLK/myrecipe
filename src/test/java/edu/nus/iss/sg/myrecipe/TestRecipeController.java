@@ -20,6 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -103,11 +104,14 @@ public class TestRecipeController {
         MediaType mediaType = new MediaType("multipart", "form-data",
         contentTypeParams);
 
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("name", "fred");
+
         RequestBuilder req = null;
         req = MockMvcRequestBuilders.multipart("/account/recipe/create")
                     .file(multipartFile)
+                    .session(session)
                     .params(params)
-                    .param("usernameTest", "fred")
                     .contentType(mediaType)
                     .accept(MediaType.TEXT_HTML_VALUE);
 
@@ -123,8 +127,8 @@ public class TestRecipeController {
         MockHttpServletResponse resp = result.getResponse();
         try {
             String payload = resp.getContentAsString();
-            assertTrue(payload.contains("Recipe create successfully!"));
             assertNotNull(payload);
+            assertTrue(payload.contains("Recipe create successfully!"));
         } catch (Exception ex) {
             fail("cannot retrieve response payload", ex);
             return;
@@ -133,9 +137,12 @@ public class TestRecipeController {
 
     @Test
     public void test3_shouldGetUserRecipeView() {
+
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute("name", "fred");
         
         RequestBuilder req = MockMvcRequestBuilders.get("/account/recipe/view")
-                .param("usernameTest", "fred")
+                .session(session)
                 .accept(MediaType.TEXT_HTML_VALUE);
 
         MvcResult result = null;
@@ -150,8 +157,8 @@ public class TestRecipeController {
         MockHttpServletResponse resp = result.getResponse();
         try {
             String payload = resp.getContentAsString();
-            assertTrue(payload.contains("Test Chicken Rice"));
             assertNotNull(payload);
+            assertTrue(payload.contains("Test Chicken Rice"));
         } catch (Exception ex) {
             fail("cannot retrieve response payload", ex);
             return;
@@ -187,8 +194,8 @@ public class TestRecipeController {
         MockHttpServletResponse resp = result.getResponse();
         try {
             String payload = resp.getContentAsString();
-            assertTrue(payload.contains("Are you sure?"));
             assertNotNull(payload);
+            assertTrue(payload.contains("Are you sure?"));
         } catch (Exception ex) {
             fail("cannot retrieve response payload", ex);
             return;
@@ -228,7 +235,81 @@ public class TestRecipeController {
     }
 
     @Test
-    public void test6_shouldDeleteRecipe() {
+    public void test6_shouldNotDeleteRecipe_NumberFormatException() {
+        RequestBuilder req = null;
+        req = MockMvcRequestBuilders.post("/account/recipe/delete")
+                    .content(ConversionUtils.buildUrlEncodedFormEntity(
+                        "recipeIdToDelete", "Test Chicken Rice"
+                    ))
+                    .param("yes", "yes")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .accept(MediaType.TEXT_HTML_VALUE);
+
+        MvcResult result = null;
+
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation", ex);
+            return;
+        }
+
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            String payload = resp.getContentAsString();
+            assertNotNull(payload);
+            assertTrue(payload.contains("Something went wrong!"));
+        } catch (Exception ex) {
+            fail("cannot retrieve response payload", ex);
+            return;
+        }
+
+        List<Recipe> recipes = recipeSvc.getUserRecipesByName("Test Chicken Rice");
+        assertFalse(recipes.isEmpty());
+
+        String name = recipes.get(0).getName();
+        assertEquals("Test Chicken Rice", name);
+    }
+
+    @Test
+    public void test7_shouldNotDeleteRecipe_RecipeNotFound() {
+        RequestBuilder req = null;
+        req = MockMvcRequestBuilders.post("/account/recipe/delete")
+                    .content(ConversionUtils.buildUrlEncodedFormEntity(
+                        "recipeIdToDelete", "-1"
+                    ))
+                    .param("yes", "yes")
+                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                    .accept(MediaType.TEXT_HTML_VALUE);
+
+        MvcResult result = null;
+
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation", ex);
+            return;
+        }
+
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            String payload = resp.getContentAsString();
+            assertNotNull(payload);
+            assertTrue(payload.contains("Something went wrong! Recipe not found!"));
+        } catch (Exception ex) {
+            fail("cannot retrieve response payload", ex);
+            return;
+        }
+
+        List<Recipe> recipes = recipeSvc.getUserRecipesByName("Test Chicken Rice");
+        assertFalse(recipes.isEmpty());
+
+        String name = recipes.get(0).getName();
+        assertEquals("Test Chicken Rice", name);
+    }
+
+    @Test
+    public void test8_shouldDeleteRecipe() {
         List<Recipe> recipes = recipeSvc.getUserRecipesByName("Test Chicken Rice");
         
         if(recipes.isEmpty()) {
@@ -256,8 +337,68 @@ public class TestRecipeController {
         MockHttpServletResponse resp = result.getResponse();
         try {
             String payload = resp.getContentAsString();
-            assertTrue(payload.contains("Successfully deleted!"));
             assertNotNull(payload);
+            assertTrue(payload.contains("Successfully deleted!"));
+        } catch (Exception ex) {
+            fail("cannot retrieve response payload", ex);
+            return;
+        }
+    }
+
+    @Test
+    public void test9_shouldNotCreateRecipe() {
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream("./src/main/resources/static/images/test.jpg");
+        } catch (FileNotFoundException e1) {
+            fail("File not found!");
+            e1.printStackTrace();
+        }
+        
+        MockMultipartFile multipartFile = null;
+        try {
+            multipartFile = new MockMultipartFile("recipeThumbnail", "test.jpg", MediaType.IMAGE_JPEG_VALUE, fis);
+        } catch (IOException e1) {
+            fail("Something went wrong when creating mock multipart file");
+            e1.printStackTrace();
+        }
+
+        HashMap<String, String> contentTypeParams = new HashMap<String, String>();
+        contentTypeParams.put("boundary", "265001916915724");
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        params.add("recipeName", "Test Chicken Rice");
+        params.add("recipeThumbnail", "test.jpg");
+        params.add("recipeCategory", "Asian");
+        params.add("recipeCountry", "Singapore");
+        params.add("recipeInstructions", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
+        params.add("recipeYoutubeLink", "https://www.youtube.com/watch?v=XPA3rn1XImY");
+        params.add("recipeMeasurement0", "1kg");
+        params.add("recipeIngredient0", "Chicken");
+
+        MediaType mediaType = new MediaType("multipart", "form-data",
+        contentTypeParams);
+
+        RequestBuilder req = null;
+        req = MockMvcRequestBuilders.multipart("/account/recipe/create")
+                    .file(multipartFile)
+                    .params(params)
+                    .contentType(mediaType)
+                    .accept(MediaType.TEXT_HTML_VALUE);
+
+        MvcResult result = null;
+
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation", ex);
+            return;
+        }
+
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            String payload = resp.getContentAsString();
+            assertNotNull(payload);
+            assertTrue(payload.contains("Something went wrong when creating recipe"));
         } catch (Exception ex) {
             fail("cannot retrieve response payload", ex);
             return;

@@ -75,6 +75,7 @@ public class SearchController {
             mav.addObject("isCreatedByOwnUser", false);
         } else {
             Recipe r = recipeOpt.get();
+
             Boolean isCreatedByOwnUser = false;
             if(r.getCreatedBy() != null) {
                 isCreatedByOwnUser = r.getCreatedBy().contentEquals(username);
