@@ -16,10 +16,10 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">My Recipe</a>
+<body class="bg-primary" style="--bs-bg-opacity: .2;">
+    <nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid mx-5">
+            <a class="navbar-brand" href="/"><i class="fa-solid fa-bowl-food fa-3x"></i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -28,15 +28,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link active" aria-current="page" href="/">My Recipe</a>
                     </li>
                 </ul>
                 <div data-th-if="${userLoggedIn == null}">
                     <form class="d-flex" action="/login" method="GET">
-                        <button class="btn btn-outline-success mx-5" type="submit">Log In</button>
+                        <button class="btn btn-primary mx-5" type="submit">Log In</button>
                     </form>
                 </div>
                 <ul class="navbar-nav" data-th-unless="${userLoggedIn == null}">
@@ -51,7 +48,7 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="GET">
+                <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
                     <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
                 </form>
             </div>
@@ -60,58 +57,39 @@
     <div class="container">
         <div class="row mt-5">
             <div class="col">
-                <h1 data-th-if="${statusMessage != null}" data-th-text="${statusMessage}"></h1>
+                <h1 class="display-6" data-th-if="${statusMessage != null}" data-th-text="${statusMessage}"></h1>
             </div>
-            <div class="row mt-5">
-                <div class="col">
-                    <form action="/login/create" method="POST">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Create Account</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Username: </td>
-                                    <td><input type="text" maxlength="20" name="usernameNew" required></td>
-                                </tr>
-                                <tr>
-                                    <td>Password: </td>
-                                    <td><input type="password" name="passwordNew" required></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><button type="submit">Create</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </form>
-                </div>
-                <div class="col">
-                    <form action="/login/auth" method="POST">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Log In</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Username: </td>
-                                    <td><input type="text" maxlength="20" name="username" required></td>
-                                </tr>
-                                <tr>
-                                    <td>Password: </td>
-                                    <td><input type="password" name="password" required></td>
-                                </tr>
-                                <tr>
-                                    <td></td>
-                                    <td><button type="submit">Log In</button></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </form>
+            <div data-th-if="${userLoggedIn == null}">
+                <div class="row mt-5">
+                    <div class="col">
+                        <form action="/login/create" method="POST">
+                            <p class="display-6">Create Account</p>
+                            <div class="mb-3">
+                                <label for="newUsername" class="form-label">Username</label>
+                                <input class="form-control" type="text" maxlength="20" name="usernameNew" id="newUsername"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Password</label>
+                                <input class="form-control" type="password" name="passwordNew" id="newPassword" required>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Create</button>
+                        </form>
+                    </div>
+                    <div class="col">
+                        <form action="/login/auth" method="POST">
+                            <p class="display-6">Log In</p>
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <input class="form-control" type="text" maxlength="20" name="username" id="username" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Username</label>
+                                <input class="form-control" type="password" name="password" id="password" required>
+                            </div>
+                            <button class="btn btn-primary" type="submit">Log In</button></td>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>

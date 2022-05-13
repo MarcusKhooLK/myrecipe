@@ -16,10 +16,10 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">My Recipe</a>
+<body class="bg-primary" style="--bs-bg-opacity: .2;">
+    <nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
+        <div class="container-fluid mx-5">
+            <a class="navbar-brand" href="/"><i class="fa-solid fa-bowl-food fa-3x"></i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -28,15 +28,12 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
+                        <a class="nav-link active" aria-current="page" href="/">My Recipe</a>
                     </li>
                 </ul>
                 <div data-th-if="${userLoggedIn == null}">
                     <form class="d-flex" action="/login" method="GET">
-                        <button class="btn btn-outline-success mx-5" type="submit">Log In</button>
+                        <button class="btn btn-primary mx-5" type="submit">Log In</button>
                     </form>
                 </div>
                 <ul class="navbar-nav" data-th-unless="${userLoggedIn == null}">
@@ -61,12 +58,11 @@
         <div class="row mt-5">
             <div class="col">
                 <form method="GET" action="/search">
-                    <form method="GET" action="/search">
-                        <div class="input-group mb-3">
-                            <input type="search" name="s" id="s" class="form-control form-control-lg" required>
-                                <button class="btn btn-primary" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                        </div>
-                    </form>
+                    <div class="input-group mb-3">
+                        <input type="search" name="s" id="s" class="form-control form-control-lg" placeholder="Search" required>
+                        <button class="btn btn-primary btn-lg" type="submit"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </div>
                 </form>
                 <div class="container" data-th-if="${recipe == null}">
                     <div class="row mt-5">
@@ -83,7 +79,8 @@
                                 max-width: 20ch;"></span>
                             </a>
                             <a data-th-unless="${r.createdBy == null}" data-th-href="|/search/u/${r.recipeId}|">
-                                <img data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${r.thumbnail}|" width="200" height="auto">
+                                <img data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${r.thumbnail}|"
+                                    width="200" height="auto">
                                 <br>
                                 <span data-th-text="${r.name}" style="
                                 display:inline-block;
@@ -106,8 +103,11 @@
         <div class="container" data-th-if="${recipe != null}">
             <div class="row mt-5">
                 <div class="col">
-                    <p data-th-if="${recipe.createdBy == null}"><img data-th-src="${recipe.thumbnail}" width="600" height="auto"></p>
-                    <p data-th-unless="${recipe.createdBy == null}"><img data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${recipe.thumbnail}|" width="600" height="auto"></p>
+                    <p data-th-if="${recipe.createdBy == null}"><img data-th-src="${recipe.thumbnail}" width="600"
+                            height="auto"></p>
+                    <p data-th-unless="${recipe.createdBy == null}"><img
+                            data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${recipe.thumbnail}|"
+                            width="600" height="auto"></p>
                     <p data-th-text="|Name: ${recipe.name}|"></p>
                     <p data-th-if="${recipe.createdBy != null}" data-th-text="|Created by: ${recipe.createdBy}|"></p>
                     <p data-th-text="|Category: ${recipe.category}|"></p>

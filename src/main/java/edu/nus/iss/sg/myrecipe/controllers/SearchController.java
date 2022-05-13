@@ -91,4 +91,36 @@ public class SearchController {
         
         return mav;
     }
+
+    @GetMapping(path="/category/{categoryName}")
+    public ModelAndView getSearchByCategory(@PathVariable String categoryName, HttpSession session) {
+        final ModelAndView mav = new ModelAndView();
+        String username = (String)session.getAttribute("name");
+        mav.addObject("userLoggedIn", username);
+
+        List<Recipe> recipes = searchSvc.searchRecipesFromMealDbWithFilter("c", categoryName);
+        mav.setStatus(HttpStatus.OK);
+        mav.setViewName("search");
+        mav.addObject("recipes", recipes);
+        mav.addObject("recipe", null);
+        mav.addObject("searchString", "");
+        mav.addObject("userLoggedIn", username);
+        return mav;
+    }
+
+    @GetMapping(path="/area/{areaName}")
+    public ModelAndView getSearchByArea(@PathVariable String areaName, HttpSession session) {
+        final ModelAndView mav = new ModelAndView();
+        String username = (String)session.getAttribute("name");
+        mav.addObject("userLoggedIn", username);
+
+        List<Recipe> recipes = searchSvc.searchRecipesFromMealDbWithFilter("a", areaName);
+        mav.setStatus(HttpStatus.OK);
+        mav.setViewName("search");
+        mav.addObject("recipes", recipes);
+        mav.addObject("recipe", null);
+        mav.addObject("searchString", "");
+        mav.addObject("userLoggedIn", username);
+        return mav;
+    }
 }

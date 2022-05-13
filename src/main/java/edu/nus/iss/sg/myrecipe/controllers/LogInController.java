@@ -35,10 +35,7 @@ public class LogInController {
     @PostMapping(path="/logout")
     public ModelAndView getLogOut(HttpSession session) {
         session.invalidate();
-        ModelAndView mav = new ModelAndView();
-        mav.setStatus(HttpStatus.OK);
-        mav.setViewName("index");
-        return mav;
+        return new ModelAndView("redirect:/");
     }
     
     @PostMapping(path="/create", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -72,7 +69,7 @@ public class LogInController {
             session.setAttribute("name", username);
             mav.addObject("userLoggedIn", username);
             mav.addObject("statusMessage", "Welcome %s!".formatted(username));
-            mav.setViewName("index");
+            mav.setViewName("login");
         } else {
             mav.addObject("userLoggedIn", null);
             mav.addObject("statusMessage", "Log in failed!");
