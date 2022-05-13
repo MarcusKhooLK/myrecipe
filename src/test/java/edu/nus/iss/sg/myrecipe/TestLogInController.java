@@ -184,7 +184,7 @@ public class TestLogInController {
         try {
             String payload = resp.getContentAsString();
             assertNotNull(payload);
-            assertTrue(payload.contains("My Recipe"));
+            assertTrue(resp.getRedirectedUrl().contentEquals("/"));
         } catch (Exception ex) {
             fail("cannot retrieve response payload", ex);
             return;
