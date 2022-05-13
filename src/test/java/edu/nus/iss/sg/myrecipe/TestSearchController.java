@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,6 +201,72 @@ public class TestSearchController {
             fail("cannot retrieve response payload", ex);
             return;
         }
+    }
+
+    @Test
+    public void test6_shouldSearchMealDBWithCategoryFilter() {
+        String categoryName = "beef";
+        String expectedReturnString = "Beef and Mustard Pie";
+        RequestBuilder req = MockMvcRequestBuilders.get("/search/category/%s".formatted(categoryName))
+                .accept(MediaType.TEXT_HTML_VALUE);
+
+        MvcResult result = null;
+
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation", ex);
+            return;
+        }
+
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            String payload = resp.getContentAsString();
+            assertNotNull(payload);
+            assertTrue(payload.contains(expectedReturnString));
+        } catch (Exception ex) {
+            fail("cannot retrieve response payload", ex);
+            return;
+        }
+    }
+
+    @Test
+    public void test7_shouldSearchMealDBWithAreaFilter(){
+        String categoryName = "american";
+        String expectedReturnString = "Banana Pancakes";
+        RequestBuilder req = MockMvcRequestBuilders.get("/search/area/%s".formatted(categoryName))
+                .accept(MediaType.TEXT_HTML_VALUE);
+
+        MvcResult result = null;
+
+        try {
+            result = mvc.perform(req).andReturn();
+        } catch (Exception ex) {
+            fail("cannot perform mvc invocation", ex);
+            return;
+        }
+
+        MockHttpServletResponse resp = result.getResponse();
+        try {
+            String payload = resp.getContentAsString();
+            assertNotNull(payload);
+            assertTrue(payload.contains(expectedReturnString));
+        } catch (Exception ex) {
+            fail("cannot retrieve response payload", ex);
+            return;
+        }
+    }
+    
+    @Test
+    public void test8_shouldReturnEmpty() {
+        List<Recipe> recipes = searchSvc.searchRecipesFromMealDb("!@)#*)%&");
+        assertTrue(recipes.isEmpty());
+
+        Optional<Recipe> recipe = searchSvc.searchRecipeFromMyRecipeDbById(-1);
+        assertTrue(recipe.isEmpty());
+
+        recipes = searchSvc.searchRecipesFromMealDbWithFilter("c", "dummy");
+        assertTrue(recipes.isEmpty());
     }
 
 }

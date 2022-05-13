@@ -53,9 +53,6 @@ public class SearchService {
             return recipes;
         }
         
-        if(jRecipes == null)
-            return recipes;
-
         for (int i = 0; i < jRecipes.size(); i++) {
             Recipe r = ConversionUtils.convert(jRecipes.getJsonObject(i), false);
             recipes.add(r);
@@ -94,9 +91,6 @@ public class SearchService {
         } catch(ClassCastException ex) {
             return Optional.empty();
         }
-
-        if (jRecipes == null)
-            return Optional.empty();
 
         Recipe recipe = ConversionUtils.convert(jRecipes.getJsonObject(0), true);
 
