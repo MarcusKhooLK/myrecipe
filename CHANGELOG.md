@@ -14,6 +14,6 @@ Added delete recipe function
 
 ## v1.0.0
 
-First workable
+First prototype
 Add filter by categories or areas
 Update styling
