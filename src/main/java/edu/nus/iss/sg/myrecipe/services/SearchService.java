@@ -155,6 +155,28 @@ public class SearchService {
         return recipes;
     }
 
+    public List<Recipe> searchRecipesFromMyRecipeDBByCategory(final String category) {
+        List<Recipe> recipes = recipeSvc.getRecipesByCategory(category);
+
+        // add a dummy author so that hyperlink can use a different endpoint
+        recipes.forEach(r -> {
+            r.setCreatedBy("u");
+        });
+
+        return recipes;
+    }
+
+    public List<Recipe> searchRecipesFromMyRecipeDBByArea(final String area) {
+        List<Recipe> recipes = recipeSvc.getRecipesByArea(area);
+
+        // add a dummy author so that hyperlink can use a different endpoint
+        recipes.forEach(r -> {
+            r.setCreatedBy("u");
+        });
+
+        return recipes;
+    }
+
     public List<String> getAllAreas() {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> resp = restTemplate.getForEntity(URL_AREAS, String.class);

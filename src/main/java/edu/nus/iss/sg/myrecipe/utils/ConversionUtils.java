@@ -19,7 +19,7 @@ public class ConversionUtils {
 
         String recipeName = form.getFirst("recipeName").trim();
         String recipeCategory = form.getFirst("recipeCategory").trim();
-        String recipeCountry = form.getFirst("recipeCountry").trim();
+        String recipeArea = form.getFirst("recipeArea").trim();
         String recipeInstructions = form.getFirst("recipeInstructions").trim();
         String recipeYoutubeLink = form.getFirst("recipeYoutubeLink").trim();
 
@@ -38,7 +38,7 @@ public class ConversionUtils {
 
         recipe.setName(recipeName);
         recipe.setCategory(recipeCategory.isBlank() ? null : recipeCategory);
-        recipe.setCountry(recipeCountry.isBlank() ? null : recipeCountry);
+        recipe.setCountry(recipeArea.isBlank() ? null : recipeArea);
         recipe.setYoutubeLink(recipeYoutubeLink.isBlank() ? null : recipeYoutubeLink);
         recipe.setInstructions(recipeInstructions);
         recipe.setIngredients(recipeIngredients);

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import edu.nus.iss.sg.myrecipe.models.Recipe;
 import edu.nus.iss.sg.myrecipe.services.AmazonS3Service;
 import edu.nus.iss.sg.myrecipe.services.RecipeService;
+import edu.nus.iss.sg.myrecipe.services.SearchService;
 import edu.nus.iss.sg.myrecipe.utils.ConversionUtils;
 
 @Controller
@@ -32,14 +33,21 @@ public class RecipeController {
     @Autowired
     private AmazonS3Service s3Svc;
 
+    @Autowired
+    private SearchService searchSvc;
+
     @GetMapping(path="/create")
     public ModelAndView showCreateRecipe(HttpSession session) {
         String username = (String)session.getAttribute("name");
-        
         ModelAndView mav = new ModelAndView();
-
-        mav.setViewName("create_recipe");
         mav.addObject("userLoggedIn", username);
+
+        List<String> areas = searchSvc.getAllAreas();
+        List<String> categories = searchSvc.getAllCategories();
+
+        mav.addObject("recipeCategories", categories);
+        mav.addObject("recipeAreas", areas);
+        mav.setViewName("create_recipe");
         mav.setStatus(HttpStatus.OK);
 
         return mav;

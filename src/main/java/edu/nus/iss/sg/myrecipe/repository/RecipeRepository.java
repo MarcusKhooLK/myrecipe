@@ -88,6 +88,26 @@ public class RecipeRepository {
         return recipes;
     }
 
+    public List<Recipe> getRecipesByCategory(String category) {
+        final SqlRowSet result = template.queryForRowSet(SQL.SELECT_RECIPE_BY_CATEGORY, category);
+        List<Recipe> recipes = new ArrayList<>();
+        while(result.next()) {
+            Recipe r = ConversionUtils.convert(result);
+            recipes.add(r);
+        }
+        return recipes;
+    }
+
+    public List<Recipe> getRecipesByArea(String area) {
+        final SqlRowSet result = template.queryForRowSet(SQL.SELECT_RECIPE_BY_AREA, area);
+        List<Recipe> recipes = new ArrayList<>();
+        while(result.next()) {
+            Recipe r = ConversionUtils.convert(result);
+            recipes.add(r);
+        }
+        return recipes;
+    }
+
     public Optional<Recipe> getRecipeByRecipeId(Integer recipeId) {
         final SqlRowSet recipeResult = template.queryForRowSet(SQL.SELECT_RECIPE_BY_ID, recipeId);
         

@@ -77,7 +77,7 @@ public class SearchController {
             Recipe r = recipeOpt.get();
 
             Boolean isCreatedByOwnUser = false;
-            if(r.getCreatedBy() != null) {
+            if(username != null && r.getCreatedBy() != null) {
                 isCreatedByOwnUser = r.getCreatedBy().contentEquals(username);
             }
 
@@ -99,6 +99,8 @@ public class SearchController {
         mav.addObject("userLoggedIn", username);
 
         List<Recipe> recipes = searchSvc.searchRecipesFromMealDbWithFilter("c", categoryName);
+        recipes.addAll(searchSvc.searchRecipesFromMyRecipeDBByCategory(categoryName));
+
         mav.setStatus(HttpStatus.OK);
         mav.setViewName("search");
         mav.addObject("recipes", recipes);
@@ -115,6 +117,8 @@ public class SearchController {
         mav.addObject("userLoggedIn", username);
 
         List<Recipe> recipes = searchSvc.searchRecipesFromMealDbWithFilter("a", areaName);
+        recipes.addAll(searchSvc.searchRecipesFromMyRecipeDBByArea(areaName));
+
         mav.setStatus(HttpStatus.OK);
         mav.setViewName("search");
         mav.addObject("recipes", recipes);

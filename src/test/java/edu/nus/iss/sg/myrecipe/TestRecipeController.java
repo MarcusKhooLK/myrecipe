@@ -95,7 +95,7 @@ public class TestRecipeController {
         params.add("recipeName", "Test Chicken Rice");
         params.add("recipeThumbnail", "test.jpg");
         params.add("recipeCategory", "Asian");
-        params.add("recipeCountry", "Singapore");
+        params.add("recipeArea", "Singaporean");
         params.add("recipeInstructions", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
         params.add("recipeYoutubeLink", "https://www.youtube.com/watch?v=XPA3rn1XImY");
         params.add("recipeMeasurement0", "1kg");
@@ -346,7 +346,7 @@ public class TestRecipeController {
     }
 
     @Test
-    public void test9_shouldNotCreateRecipe() {
+    public void test9_shouldNotCreateRecipeWithoutLogIn() {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream("./src/main/resources/static/images/test.jpg");
@@ -369,7 +369,7 @@ public class TestRecipeController {
         params.add("recipeName", "Test Chicken Rice");
         params.add("recipeThumbnail", "test.jpg");
         params.add("recipeCategory", "Asian");
-        params.add("recipeCountry", "Singapore");
+        params.add("recipeArea", "Singaporean");
         params.add("recipeInstructions", "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
         params.add("recipeYoutubeLink", "https://www.youtube.com/watch?v=XPA3rn1XImY");
         params.add("recipeMeasurement0", "1kg");

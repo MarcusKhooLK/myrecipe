@@ -71,9 +71,13 @@
                     <input type="file" class="form-control mb-3" name="recipeThumbnail" accept="image/*"
                         id="id_thumbnail" required>
                     <label for="id_category">Category</label>
-                    <input type="text" class="form-control mb-3" name="recipeCategory" id="id_category" required>
-                    <label for="id_country">Country</label>
-                    <input type="text" class="form-control mb-3" name="recipeCountry" id="id_country" required>
+                    <select class="form-select mb-3" name="recipeCategory" id="id_category" required>
+                        <option data-th-each="c: ${recipeCategories}" data-th-value="${c}" data-th-text="${c}"></option>
+                    </select>
+                    <label for="id_area">Area</label>
+                    <select class="form-select mb-3" name="recipeArea" id="id_area" required>
+                        <option data-th-each="a: ${recipeAreas}" data-th-value="${a}" data-th-text="${a}"></option>
+                    </select>
                     <label for="id_instructions">Instructions</label>
                     <textarea class="form-control mb-3" name="recipeInstructions" cols="80" rows="5"
                         id="id_instructions" required></textarea>

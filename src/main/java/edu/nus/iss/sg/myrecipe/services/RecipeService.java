@@ -58,6 +58,14 @@ public class RecipeService {
         return recipeRepo.getUserRecipesByName(recipeName);
     }
 
+    public List<Recipe> getRecipesByCategory(String category) {
+        return recipeRepo.getRecipesByCategory(category);
+    }
+
+    public List<Recipe> getRecipesByArea(String area) {
+        return recipeRepo.getRecipesByArea(area);
+    }
+
     public Optional<Recipe> getRecipeByRecipeId(Integer recipeId) {
         return recipeRepo.getRecipeByRecipeId(recipeId);
     }
