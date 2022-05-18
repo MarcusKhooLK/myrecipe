@@ -17,8 +17,8 @@
     <script src="/js/script.js"></script>
 </head>
 
-<body class="bg-primary" style="--bs-bg-opacity: .2;">
-    <nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
+<body class="bg-success" style="--bs-bg-opacity: .15;">
+    <nav class="navbar navbar-expand navbar-light" style="background-color: #84ddb6;">
         <div class="container-fluid mx-5">
             <a class="navbar-brand" href="/"><i class="fa-solid fa-bowl-food fa-3x"></i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -50,7 +50,7 @@
                     </li>
                 </ul>
                 <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
-                    <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
+                    <button class="btn btn-primary btn-sm mx-5" type="submit">Log Out</button>
                 </form>
             </div>
         </div>

@@ -16,8 +16,8 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body class="bg-primary" style="--bs-bg-opacity: .2;">
-    <nav class="navbar navbar-expand navbar-light" style="background-color: #e3f2fd;">
+<body class="bg-success" style="--bs-bg-opacity: .15;">
+    <nav class="navbar navbar-expand navbar-light" style="background-color: #84ddb6;">
         <div class="container-fluid mx-5">
             <a class="navbar-brand" href="/"><i class="fa-solid fa-bowl-food fa-3x"></i></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -49,7 +49,7 @@
                     </li>
                 </ul>
                 <form class="d-flex" data-th-unless="${userLoggedIn == null}" action="/login/logout" method="POST">
-                    <button class="btn btn-outline-danger mx-5" type="submit">Log Out</button>
+                    <button class="btn btn-primary btn-sm mx-5" type="submit">Log Out</button>
                 </form>
             </div>
         </div>
@@ -103,28 +103,37 @@
         <div class="container" data-th-if="${recipe != null}">
             <div class="row mt-5">
                 <div class="col">
-                    <p data-th-if="${recipe.createdBy == null}"><img data-th-src="${recipe.thumbnail}" width="600"
+                    <div data-th-if="${recipe.createdBy == null}">
+                        <p class="fs-1 fw-bold" data-th-text="${recipe.name}"></p>
+                        <p><img class="rounded" data-th-src="${recipe.thumbnail}" width="600"
                             height="auto"></p>
-                    <p data-th-unless="${recipe.createdBy == null}"><img
-                            data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${recipe.thumbnail}|"
-                            width="600" height="auto"></p>
-                    <p data-th-text="|Name: ${recipe.name}|"></p>
-                    <p data-th-if="${recipe.createdBy != null}" data-th-text="|Created by: ${recipe.createdBy}|"></p>
-                    <p data-th-text="|Category: ${recipe.category}|"></p>
-                    <p data-th-text="|Country: ${recipe.country}|"></p>
+                    </div>
+                    <div data-th-unless="${recipe.createdBy == null}">
+                        <p><span class="fs-1 fw-bold me-3" data-th-text="${recipe.name}"></span><span class="fs-3 fst-italic" data-th-text="|by ${recipe.createdBy}|"></span></p>
+                        <p><img class="rounded"
+                                data-th-src="|https://dumpbucket.sgp1.digitaloceanspaces.com/myrecipe/images/${recipe.thumbnail}|"
+                                width="600" height="auto"></p>
+                    </div>
+                    <p>
+                        <a class="bg-primary bg-opacity-10 border border-primary rounded-pill px-3" data-th-href=|/search/category/${recipe.category}|><span data-th-text="${recipe.category}"></span></a>
+                        <a class="bg-primary bg-opacity-10 border border-primary rounded-pill px-3" data-th-href=|/search/area/${recipe.country}|><span data-th-text="${recipe.country}"></span></a>
+                    </p>
+                    <p class="fs-3">Instructions</p>
                     <p style="width: 1000px;
-                        word-wrap: break-word;" data-th-text="|Instructions: ${recipe.instructions}|"></p>
-                    <p>Ingredients:</p>
-                    <ul>
-                        <li data-th-each="ingredient: ${recipe.ingredients}"
-                            data-th-text="|${ingredient} ${recipe.measurements[ingredientStat.index]}|"></li>
-                    </ul>
-                    <div class="embed-responsive embed-responsive-16by9" data-th-if="${recipe.youtubeLink != null}">
+                        word-wrap: break-word;" data-th-text="${recipe.instructions}"></p>
+                    <p class="fs-3">Ingredients</p>
+                    <p>
+                        <ul>
+                            <li data-th-each="ingredient: ${recipe.ingredients}"
+                                data-th-text="|${recipe.measurements[ingredientStat.index]} ${ingredient}|"></li>
+                        </ul>
+                    </p>
+                    <div class="embed-responsive embed-responsive-16by9 mt-5 mb-5" data-th-if="${recipe.youtubeLink != null}">
                         <iframe width="1024" height="576" data-th-src="${recipe.youtubeLink}"></iframe>
                     </div>
                 </div>
             </div>
-            <div class="row mt-5" data-th-if="${isCreatedByOwnUser}">
+            <div class="row" data-th-if="${isCreatedByOwnUser}">
                 <div class="col">
                     <form action="/account/recipe/delete" method="POST">
                         <input type="hidden" name="recipeIdToDelete" data-th-value="${recipe.recipeId}">

@@ -29,6 +29,9 @@ public class LogInController {
         mav.setStatus(HttpStatus.OK);
         mav.setViewName("login");
         mav.addObject("userLoggedIn", username);
+        if(username != null) {
+            mav.addObject("statusMessage", "Welcome %s!".formatted(username));
+        }
         return mav;
     }
 
