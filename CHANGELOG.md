@@ -17,3 +17,7 @@ Added delete recipe function
 First prototype
 Add filter by categories or areas
 Update styling
+
+## v1.1.0
+
+Add edit functionality
