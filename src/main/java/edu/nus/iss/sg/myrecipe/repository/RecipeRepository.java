@@ -65,6 +65,20 @@ public class RecipeRepository {
         return true;
     }
 
+    public Boolean updateRecipe(Recipe recipe, Integer userId) {
+        int result = template.update(SQL.UPDATE_RECIPE, 
+        recipe.getName(), 
+        recipe.getCategory(), 
+        recipe.getCountry(),
+        recipe.getInstructions(), 
+        recipe.getThumbnail(), 
+        recipe.getYoutubeLink(), 
+        recipe.getRecipeId(), 
+        userId);
+
+        return result > 0;
+    }
+
     public List<Recipe> getAllUserRecipesByUserId(Integer userId) {
         final SqlRowSet result = template.queryForRowSet(SQL.SELECT_ALL_RECIPE_BY_USERID, userId);
 

@@ -44,6 +44,24 @@ public class RecipeService {
         return recipeRepo.insertIngredients(recipe.getIngredients(), recipe.getMeasurements(), recipeId);
     }
 
+    @Transactional
+    public Boolean updateRecipe(Recipe recipe, String username) {
+        if(username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        Integer userId = userRepo.findUserIdByUsername(username);
+
+        if(userId < 0) {
+            throw new IllegalArgumentException();
+        }
+
+        recipeRepo.updateRecipe(recipe, userId);
+        Integer recipeId = Integer.parseInt(recipe.getRecipeId());
+        recipeRepo.deleteIngredientsByRecipeId(recipeId);
+        return recipeRepo.insertIngredients(recipe.getIngredients(), recipe.getMeasurements(), recipeId);
+    }
+
     public List<Recipe> getAllUserRecipesByUserId(String username) {
         Integer userId = userRepo.findUserIdByUsername(username);
 

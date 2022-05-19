@@ -15,6 +15,11 @@ public interface SQL {
     public static final String SELECT_ALL_RECIPE_BY_USERID = "select * from recipe where user_id = ?;";
     public static final String SELECT_RECIPE_BY_ID = "select * from recipe where recipe_id = ?;";
     public static final String DELETE_RECIPE_BY_ID = "delete from recipe where recipe_id = ?;";
+    public static final String UPDATE_RECIPE = 
+    """
+    update recipe set name = ?, category = ?, country = ?, instructions = ?, thumbnail = ?, youtubeLink = ?
+    where recipe_id = ? and user_id = ?;
+    """;
 
     // ingredient
     public static final String INSERT_INGREDIENT = "insert into ingredient (name, measurement, recipe_id) values (?, ?, ?);";

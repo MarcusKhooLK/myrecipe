@@ -123,7 +123,7 @@
                         word-wrap: break-word;" data-th-text="${recipe.instructions}"></p>
                     <p class="fs-3">Ingredients</p>
                     <p>
-                        <ul>
+                        <ul class="mb-5">
                             <li data-th-each="ingredient: ${recipe.ingredients}"
                                 data-th-text="|${recipe.measurements[ingredientStat.index]} ${ingredient}|"></li>
                         </ul>
@@ -134,6 +134,14 @@
                 </div>
             </div>
             <div class="row" data-th-if="${isCreatedByOwnUser}">
+                <div class="col">
+                    <form action="/account/recipe/edit" method="POST">
+                        <input type="hidden" name="recipeIdToEdit" data-th-value="${recipe.recipeId}">
+                        <div class="d-grid gap-2 col-5 mx-auto">
+                            <button class="btn btn-primary btn-lg mb-5" type="submit">Edit</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="col">
                     <form action="/account/recipe/delete" method="POST">
                         <input type="hidden" name="recipeIdToDelete" data-th-value="${recipe.recipeId}">

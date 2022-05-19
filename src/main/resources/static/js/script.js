@@ -1,5 +1,5 @@
-var counter=0;
-var max_fields      = 20; //maximum input boxes allowed
+var counter = 0;
+var max_fields = 20; //maximum input boxes allowed
 function add_more_field(){
     if(counter < max_fields) {
         counter+=1

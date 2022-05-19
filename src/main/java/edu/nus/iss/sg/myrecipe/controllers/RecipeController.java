@@ -24,9 +24,9 @@ import edu.nus.iss.sg.myrecipe.services.SearchService;
 import edu.nus.iss.sg.myrecipe.utils.ConversionUtils;
 
 @Controller
-@RequestMapping(path="/account/recipe")
+@RequestMapping(path = "/account/recipe")
 public class RecipeController {
-    
+
     @Autowired
     private RecipeService recipeSvc;
 
@@ -36,9 +36,9 @@ public class RecipeController {
     @Autowired
     private SearchService searchSvc;
 
-    @GetMapping(path="/create")
+    @GetMapping(path = "/create")
     public ModelAndView showCreateRecipe(HttpSession session) {
-        String username = (String)session.getAttribute("name");
+        String username = (String) session.getAttribute("name");
         ModelAndView mav = new ModelAndView();
         mav.addObject("userLoggedIn", username);
 
@@ -53,13 +53,13 @@ public class RecipeController {
         return mav;
     }
 
-    @PostMapping(path="/create")
+    @PostMapping(path = "/create")
     public ModelAndView postCreateRecipe(@RequestParam MultiValueMap<String, String> form,
-                                            @RequestParam MultipartFile recipeThumbnail,
-                                            HttpSession session) {
-        String username = (String)session.getAttribute("name");
+            @RequestParam MultipartFile recipeThumbnail,
+            HttpSession session) {
+        String username = (String) session.getAttribute("name");
         ModelAndView mav = new ModelAndView();
-    
+
         String thumbnailId = s3Svc.upload(recipeThumbnail, username);
 
         Recipe r = ConversionUtils.convert(form);
@@ -70,7 +70,7 @@ public class RecipeController {
             recipeSvc.createRecipe(r, username);
             mav.setViewName("create_recipe_success");
             mav.setStatus(HttpStatus.OK);
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             s3Svc.delete(thumbnailId);
             mav.setViewName("error");
             mav.addObject("errorMsg", "Something went wrong when creating recipe");
@@ -81,11 +81,11 @@ public class RecipeController {
 
         return mav;
     }
-    
-    @GetMapping(path="/view")
+
+    @GetMapping(path = "/view")
     public ModelAndView showUserRecipes(HttpSession session) {
 
-        String username = (String)session.getAttribute("name");
+        String username = (String) session.getAttribute("name");
 
         List<Recipe> recipes = recipeSvc.getAllUserRecipesByUserId(username);
 
@@ -98,9 +98,9 @@ public class RecipeController {
         return mav;
     }
 
-    @PostMapping(path="/delete")
+    @PostMapping(path = "/delete")
     public ModelAndView showDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
-        String username = (String)session.getAttribute("name");
+        String username = (String) session.getAttribute("name");
         ModelAndView mav = new ModelAndView();
         mav.setViewName("delete_recipe_confirmation");
         mav.setStatus(HttpStatus.OK);
@@ -109,9 +109,9 @@ public class RecipeController {
         return mav;
     }
 
-    @PostMapping(path="/delete", params="yes")
+    @PostMapping(path = "/delete", params = "yes")
     public ModelAndView yesDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
-        String username = (String)session.getAttribute("name");
+        String username = (String) session.getAttribute("name");
         ModelAndView mav = new ModelAndView();
         mav.addObject("userLoggedIn", username);
         mav.setViewName("delete_recipe_status");
@@ -120,7 +120,7 @@ public class RecipeController {
         Integer recipeId = null;
         try {
             recipeId = Integer.parseInt(recipeIdStr);
-        }catch(NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             mav.addObject("statusMessage", "Something went wrong! %s".formatted(ex.getMessage()));
             mav.setStatus(HttpStatus.BAD_REQUEST);
             return mav;
@@ -128,7 +128,7 @@ public class RecipeController {
 
         Optional<Recipe> r = recipeSvc.getRecipeByRecipeId(recipeId);
 
-        if(r.isEmpty()) {
+        if (r.isEmpty()) {
             mav.addObject("statusMessage", "Something went wrong! Recipe not found!");
             mav.setStatus(HttpStatus.NOT_FOUND);
             return mav;
@@ -141,10 +141,87 @@ public class RecipeController {
         return mav;
     }
 
-    @PostMapping(path="/delete", params="no")
+    @PostMapping(path = "/delete", params = "no")
     public ModelAndView noDeleteConfimation(HttpSession session, @RequestBody MultiValueMap<String, String> form) {
         String recipeId = form.getFirst("recipeIdToDelete");
         return new ModelAndView("redirect:/search/u/%s".formatted(recipeId));
+    }
+
+    @PostMapping(path = "/edit")
+    public ModelAndView showEditForm(HttpSession session, @RequestParam MultiValueMap<String, String> form) {
+        String username = (String) session.getAttribute("name");
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("userLoggedIn", username);
+
+        String recipeId = form.getFirst("recipeIdToEdit");
+        Optional<Recipe> recipeOpt = recipeSvc.getRecipeByRecipeId(Integer.parseInt(recipeId));
+        if (recipeOpt.isEmpty()) {
+            mav.setViewName("error");
+            mav.addObject("errorMsg", "Something went wrong when editing recipe!");
+            mav.setStatus(HttpStatus.NOT_FOUND);
+            return mav;
+        }
+
+        List<String> areas = searchSvc.getAllAreas();
+        List<String> categories = searchSvc.getAllCategories();
+
+        mav.addObject("recipe", recipeOpt.get());
+        mav.addObject("recipeAreas", areas);
+        mav.addObject("recipeCategories", categories);
+        mav.setViewName("edit_recipe");
+        mav.setStatus(HttpStatus.OK);
+        return mav;
+    }
+
+    @PostMapping(path = "/edit", params = "done")
+    public ModelAndView postEditForm(HttpSession session,
+            @RequestParam MultiValueMap<String, String> form,
+            @RequestParam MultipartFile recipeThumbnail) {
+
+        String username = (String) session.getAttribute("name");
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("userLoggedIn", username);
+
+        String recipeId = form.getFirst("recipeIdToEdit");
+
+        Optional<Recipe> recipeOpt = recipeSvc.getRecipeByRecipeId(Integer.parseInt(recipeId));
+
+        if (recipeOpt.isEmpty()) {
+            mav.setViewName("error");
+            mav.addObject("errorMsg", "Something went wrong when editing recipe! Recipe not found!");
+            mav.setStatus(HttpStatus.NOT_FOUND);
+            return mav;
+        }
+
+        Recipe oldRecipe = recipeOpt.get();
+        
+        String thumbnailId = oldRecipe.getThumbnail();
+
+        if (!recipeThumbnail.isEmpty()) {
+            s3Svc.delete(thumbnailId);
+            thumbnailId = s3Svc.upload(recipeThumbnail, username);
+        }
+
+        Recipe r = ConversionUtils.convert(form);
+        r.setCreatedBy(username);
+        r.setThumbnail(thumbnailId);
+        r.setRecipeId(oldRecipe.getRecipeId());
+
+        try {
+            recipeSvc.updateRecipe(r, username);
+            mav.setViewName("edit_recipe_success");
+            mav.setStatus(HttpStatus.OK);
+        } catch(Exception ex) {
+            if(!recipeThumbnail.isEmpty()) {
+                s3Svc.delete(thumbnailId);
+            }
+            mav.setViewName("error");
+            mav.addObject("errorMsg", "Something went wrong when editing recipe");
+            mav.setStatus(HttpStatus.BAD_REQUEST);
+            return mav;
+        }
+
+        return mav;
     }
 
 }
