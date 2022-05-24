@@ -158,7 +158,7 @@ public class TestRecipeController {
         try {
             String payload = resp.getContentAsString();
             assertNotNull(payload);
-            assertTrue(payload.contains("Recipe create successfully!"));
+            assertTrue(payload.contains("Recipe created successfully!"));
         } catch (Exception ex) {
             fail("cannot retrieve response payload", ex);
             return;
